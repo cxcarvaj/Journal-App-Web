@@ -7,8 +7,8 @@ import { FloatingButton } from '../components';
 export const JournalPage = () => {
   return (
     <JournalLayout>
-      {/* <NothingSelectedView /> */}
-      <NoteView />
+      <NothingSelectedView />
+      {/* <NoteView /> */}
       <FloatingButton />
     </JournalLayout>
   );
