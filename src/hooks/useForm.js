@@ -9,7 +9,6 @@ export const useForm = (initialForm = {}, formValidations = {}) => {
   }, [formState]);
 
   const isFormValid = useMemo(() => {
-    console.log(Object.values(formValidation).every((value) => value === null));
     return Object.values(formValidation).every((value) => value === null);
   }, [formValidation]);
 
@@ -37,7 +36,6 @@ export const useForm = (initialForm = {}, formValidations = {}) => {
         : errorMessage;
     }
     setFormValidation(formCheckedValues);
-    console.log(formCheckedValues);
   };
 
   return {
