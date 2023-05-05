@@ -90,3 +90,7 @@ export const registerWithEmailAndPassword = async ({
     };
   }
 };
+
+export const logOutFirebase = async () => {
+  return await FirebaseAuth.signOut();
+};
