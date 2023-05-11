@@ -74,6 +74,7 @@ export const NoteView = () => {
         <input
           ref={fileInputRef}
           type="file"
+          accept="image/*"
           multiple
           onChange={onFileInputChange}
           style={{ display: 'none' }}
@@ -122,7 +123,7 @@ export const NoteView = () => {
         />
       </Grid>
 
-      <ImageGallery />
+      <ImageGallery images={activeNote.imageUrls} />
     </Grid>
   );
 };
