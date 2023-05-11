@@ -5,10 +5,11 @@ import {
   savingNewNote,
   setActiveNote,
   setNotes,
+  setPhotosToActiveNote,
   setSaving,
   updateNote
 } from './journalSlice';
-import { loadNotes } from '../../helpers';
+import { loadNotes, uploadFile } from '../../helpers';
 
 export const startNewNote = () => {
   return async (dispatch, getState) => {
@@ -60,5 +61,26 @@ export const startSaveNote = () => {
     await setDoc(noteRef, noteToSave, { merge: true });
 
     dispatch(updateNote(activeNote));
+  };
+};
+
+export const startUploadingFiles = (files = []) => {
+  return async (dispatch) => {
+    dispatch(setSaving());
+
+    const uploadFilePromises = [];
+
+    for (const file of files) {
+      // * We are not using the await keyword here because we want to upload all the files at the same time
+      // * Here we are pushing the promise returned by the uploadFile function and not executing the function
+      uploadFilePromises.push(uploadFile(file));
+    }
+
+    // * We are using Promise.all to wait for all the promises to be resolved
+    // * Promise.all returns an array with the results of each promise
+    // * This works perfectly when we want to make multiple requests at the same time
+    const photosUrls = await Promise.all(uploadFilePromises);
+
+    dispatch(setPhotosToActiveNote(photosUrls));
   };
 };
