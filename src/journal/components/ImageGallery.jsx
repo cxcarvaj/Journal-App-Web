@@ -1,6 +1,6 @@
 import { Box, ImageList, ImageListItem } from '@mui/material';
 
-export const ImageGallery = ({ images = [] }) => {
+export const ImageGallery = ({ images }) => {
   return (
     <Box sx={{ width: '100%', height: 500, overflowY: 'scroll' }}>
       <ImageList variant="masonry" cols={4} gap={8}>
@@ -17,4 +17,12 @@ export const ImageGallery = ({ images = [] }) => {
       </ImageList>
     </Box>
   );
+};
+
+ImageGallery.propTypes = {
+  images: PropTypes.array
+};
+
+ImageGallery.defaultProps = {
+  images: []
 };
