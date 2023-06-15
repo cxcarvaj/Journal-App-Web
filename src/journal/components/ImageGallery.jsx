@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { Box, ImageList, ImageListItem } from '@mui/material';
 
 export const ImageGallery = ({ images }) => {
