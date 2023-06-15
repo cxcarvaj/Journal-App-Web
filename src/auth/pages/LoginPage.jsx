@@ -15,7 +15,10 @@ import { AuthLayout } from '../layout/AuthLayout';
 
 import { useForm } from '../../hooks';
 
-import { startEmailAndPasswordLogin, startGoogleLogin } from '../../store/auth';
+import {
+  startLoginWithEmailAndPassword,
+  startGoogleLogin
+} from '../../store/auth';
 
 const formData = {
   email: 'cx@gmail.com',
@@ -32,7 +35,7 @@ export const LoginPage = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    dispatch(startEmailAndPasswordLogin({ email, password }));
+    dispatch(startLoginWithEmailAndPassword({ email, password }));
   };
 
   const onGoogleLogin = () => {
