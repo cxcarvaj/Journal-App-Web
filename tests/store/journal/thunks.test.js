@@ -4,7 +4,10 @@ import {
   savingNewNote,
   setActiveNote
 } from '../../../src/store/journal/journalSlice';
-import { startNewNote } from '../../../src/store/journal/thunks';
+import {
+  startNewNote,
+  startLoadingNotes
+} from '../../../src/store/journal/thunks';
 import { FirebaseDB } from '../../../src/firebase/config';
 
 // jest.mock('../../../src/firebase/config', () => ({
@@ -57,5 +60,16 @@ describe('Tests on Journal Thunks', () => {
     docs.forEach((doc) => deletePromises.push(deleteDoc(doc.ref)));
 
     await Promise.all(deletePromises);
+  });
+
+  it('should throw an error while start loading notes if user is not found', async () => {
+    getState.mockReturnValue({ auth: { uid: null } });
+
+    try {
+      await startLoadingNotes()(dispatch, getState);
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+      expect(error).toHaveProperty('message', 'User not found');
+    }
   });
 });
