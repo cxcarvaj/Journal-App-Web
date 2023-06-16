@@ -148,7 +148,6 @@ describe('Tests on AuthThunks', () => {
     expect(logOutFirebase).toHaveBeenCalled();
     expect(dispatch).toHaveBeenCalledWith(logout({}));
     expect(dispatch).toHaveBeenCalledWith(clearNotesLogOut());
-
   });
 });
 
