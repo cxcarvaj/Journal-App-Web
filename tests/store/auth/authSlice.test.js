@@ -24,7 +24,7 @@ describe('Tests on authSlice', () => {
   });
 
   it('should authenticate the user', () => {
-    //* This is the action we need to send to the reducer.
+    //* Login is the action we need to send to the reducer.
     // console.log(login(demoUser));
     const state = authSlice.reducer(initialState, login(demoUser));
     // console.log(state);

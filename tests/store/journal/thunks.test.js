@@ -1,14 +1,22 @@
 import { collection, deleteDoc, getDocs } from 'firebase/firestore/lite';
 import {
   addNewEmptyNote,
+  deleteNoteById,
   savingNewNote,
-  setActiveNote
+  setActiveNote,
+  setNotes,
+  setSaving,
+  updateNote
 } from '../../../src/store/journal/journalSlice';
 import {
   startNewNote,
-  startLoadingNotes
+  startLoadingNotes,
+  startSaveNote,
+  startDeletingNote
 } from '../../../src/store/journal/thunks';
 import { FirebaseDB } from '../../../src/firebase/config';
+import { authenticatedState } from '../../fixtures/authFixtures';
+import { demoNotes } from '../../fixtures/journalFixtures';
 
 // jest.mock('../../../src/firebase/config', () => ({
 //   FirebaseAuth: jest.fn()
@@ -21,11 +29,10 @@ import { FirebaseDB } from '../../../src/firebase/config';
 describe('Tests on Journal Thunks', () => {
   const dispatch = jest.fn();
   const getState = jest.fn();
+  const uid = 'TEST-UID';
 
   beforeEach(() => jest.clearAllMocks());
   it('should add a new empty note', async () => {
-    const uid = 'TEST-UID';
-
     getState.mockReturnValue({ auth: { uid: uid } });
 
     await startNewNote()(dispatch, getState);
@@ -71,5 +78,40 @@ describe('Tests on Journal Thunks', () => {
       expect(error).toBeInstanceOf(Error);
       expect(error).toHaveProperty('message', 'User not found');
     }
+  });
+  it('should start loading notes if user is found', async () => {
+    getState.mockReturnValue({ auth: { uid: uid } });
+
+    await startLoadingNotes()(dispatch, getState);
+
+    expect(dispatch).toHaveBeenCalledWith(setNotes([]));
+  });
+  it('should start saving note if user is found', async () => {
+    getState.mockReturnValue({
+      auth: { uid: uid },
+      journal: { activeNote: demoNotes[0] }
+    });
+
+    await startSaveNote()(dispatch, getState);
+
+    expect(dispatch).toHaveBeenCalledWith(updateNote(demoNotes[0]));
+
+    const collectionRef = collection(FirebaseDB, `${uid}/journal/notes`);
+    const docs = await getDocs(collectionRef);
+
+    const deletePromises = [];
+
+    docs.forEach((doc) => deletePromises.push(deleteDoc(doc.ref)));
+
+    await Promise.all(deletePromises);
+  });
+  it('should start deleting notes if user is found', async () => {
+    getState.mockReturnValue({
+      auth: { uid: uid },
+      journal: { activeNote: demoNotes[0] }
+    });
+
+    await startDeletingNote()(dispatch, getState);
+    expect(dispatch).toHaveBeenCalledWith(deleteNoteById(demoNotes[0].id));
   });
 });
