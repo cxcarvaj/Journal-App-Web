@@ -44,7 +44,11 @@ export const LoginPage = () => {
 
   return (
     <AuthLayout>
-      <form onSubmit={onSubmit} className="animate__animated animate__fadeIn">
+      <form
+        onSubmit={onSubmit}
+        className="animate__animated animate__fadeIn"
+        data-testid="submit-form"
+      >
         <Grid container>
           <Grid item xs={12} sx={{ mt: 2 }}>
             <TextField
@@ -65,6 +69,7 @@ export const LoginPage = () => {
               autoComplete="username"
               fullWidth
               name="password"
+              inputProps={{ 'data-testid': 'password' }}
               value={password}
               onChange={onInputChange}
             />
@@ -92,6 +97,7 @@ export const LoginPage = () => {
                 disabled={isAuthenticating}
                 variant="contained"
                 fullWidth
+                data-testid="google-login-button"
                 onClick={onGoogleLogin}
               >
                 <Google />
