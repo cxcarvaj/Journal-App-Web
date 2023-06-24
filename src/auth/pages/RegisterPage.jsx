@@ -64,7 +64,11 @@ export const RegisterPage = () => {
 
   return (
     <AuthLayout title="Create Account">
-      <form onSubmit={onSubmit} className="animate__animated animate__fadeIn">
+      <form
+        onSubmit={onSubmit}
+        className="animate__animated animate__fadeIn"
+        data-testid="submit-form"
+      >
         <Grid container>
           <Grid item xs={12} sx={{ mt: 2 }}>
             <TextField
@@ -113,6 +117,7 @@ export const RegisterPage = () => {
               helperText={
                 !(Boolean(passwordValid) && formSubmitted) ? '' : passwordValid
               }
+              inputProps={{ 'data-testid': 'password' }}
             />
           </Grid>
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
@@ -129,6 +134,7 @@ export const RegisterPage = () => {
                 type="submit"
                 variant="contained"
                 fullWidth
+                data-testid="register-button"
               >
                 Create account
               </Button>
